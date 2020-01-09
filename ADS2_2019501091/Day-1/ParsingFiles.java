@@ -4,7 +4,7 @@ import java.util.*;
 public class ParsingFiles{
 
     public void ParseSysets() throws Exception{
-        FileReader HFile = new FileReader("/home/user/Documents/ADS2_2019501091/Day-1/synsets.txt");
+        FileReader HFile = new FileReader("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/synsets.txt");
         BufferedReader BFile = new BufferedReader(HFile);
         HashMap<String, List<Integer>> h1 = new HashMap<String, List<Integer>>();
         String s2;
@@ -22,7 +22,7 @@ public class ParsingFiles{
     }
     
     public void ParseHypernyms() throws Exception{
-        FileReader HFile = new FileReader("/home/user/Documents/ADS2_2019501091/Day-1/hypernyms6TwoAncestors.txt");
+        FileReader HFile = new FileReader("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/hypernyms6TwoAncestors.txt");
         BufferedReader BFile = new BufferedReader(HFile);
         HashMap<Integer, List<Integer>> h1 = new HashMap<Integer, List<Integer>>();
         String s2;
