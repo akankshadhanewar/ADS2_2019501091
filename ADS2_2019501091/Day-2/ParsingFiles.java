@@ -1,8 +1,8 @@
 import java.io.*;
 import java.util.*;
+import edu.princeton.cs.algs4.Digraph;
 
 public class ParsingFiles{
-
     HashMap<String, List<Integer>> synsets = new HashMap<String, List<Integer>>();
     HashMap<Integer, List<Integer>> hypernyms = new HashMap<Integer, List<Integer>>();
     int count;
@@ -22,7 +22,7 @@ public class ParsingFiles{
                 synsets.get(str2[i]).add(Integer.parseInt(str[0]));
             }
         }
-        System.out.println(synsets.toString());
+        //System.out.println(synsets.toString());
         HFile.close();
         BFile.close();
     }
@@ -44,14 +44,23 @@ public class ParsingFiles{
                 hypernyms.put(Integer.parseInt(str[0]),val);
             }
         }
-        System.out.println(hypernyms.toString());
+        //System.out.println(hypernyms.toString());
         HFile.close();
         BFile.close();
-    }
+    }    
 
     public static void main(String[] args) throws Exception {
-        ParsingFiles PF = new ParsingFiles();
-        PF.ParseSysets("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/synsets.txt");
-        PF.ParseHypernyms("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/hypernyms.txt");
+        ParsingFiles pf = new ParsingFiles();
+        pf.ParseSysets("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/synsets.txt");
+        pf.ParseHypernyms("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/hypernyms.txt");
+        Digraph d = new Digraph(pf.hypernyms.size());
+        for(int key: pf.hypernyms.keySet()){
+            pf.count++;
+            for(int val: pf.hypernyms.get(key)){
+                d.addEdge(key,val);
+                pf.count1++;
+            }
+        }
+        System.out.println(pf.count+", "+pf.count1);
     }
 }
