@@ -1,34 +1,30 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import edu.princeton.cs.algs4.Digraph;
+import java.lang.IllegalArgumentException;
+import java.util.Iterator;
+
 import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
+import edu.princeton.cs.algs4.Digraph;
 
 public class SAP {
-    Digraph g;
-    int default_len = Integer.MAX_VALUE;
-    int ancestor = -1;
+    private final Digraph g;
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G){
-        g = G;       
+        g = new Digraph(G);
     }
- 
-    // length of shortest ancestral path between v and w; -1 if no such path
-    public int length(int v, int w){
-        if(ancestor(v, w) == -1){
-            return -1;
+
+    private int[] sap(int v, int w){
+        if(v < 0 && v >= g.V()){
+            throw new IllegalArgumentException();
         }
-        else{
-            return default_len;
+        if(w < 0 && w >= g.V()){
+            throw new IllegalArgumentException();
         }
-    }
- 
-    // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
-    public int ancestor(int v, int w){
+        int result[] = new int[2];
+        int default_len = Integer.MAX_VALUE;
+        int ancestor = -1;
         BreadthFirstDirectedPaths bfsv = new BreadthFirstDirectedPaths(g, v);
         BreadthFirstDirectedPaths bfsw = new BreadthFirstDirectedPaths(g, w);
-        for(int i = 0; i<g.V(); i++){
+        for(int i = 0; i < g.V(); ++i){
             if(bfsv.hasPathTo(i) && bfsw.hasPathTo(i)){
                 int len_v = bfsv.distTo(i);
                 int len_w = bfsw.distTo(i);
@@ -36,49 +32,92 @@ public class SAP {
                     default_len = len_v+len_w;
                     ancestor = i;
                 }
-                
             }
         }
-        return ancestor;
+        if(ancestor == -1){
+            result[0] = -1;
+            result[1] = -1;
+        }
+        else{
+            result[0] = default_len;
+            result[1] = ancestor;
+        }
+        return result;
+    }
+
+    private int[] sap(Iterable<Integer> v, Iterable<Integer> w){
+        for(int v1: v){
+            if(v1 < 0 && v1 >= g.V()){
+                throw new IllegalArgumentException();
+            }
+            String s = Integer.toString(v1);
+            if(s == null){
+                throw new IllegalArgumentException();
+            }
+        }
+
+        for(int w1: w){
+            if(w1 < 0 && w1 >= g.V()){
+                throw new IllegalArgumentException();
+            }
+            String s = Integer.toString(w1);
+            if(s == null){
+                throw new IllegalArgumentException();
+            }
+        }
+        int result[] = new int[2];
+        int default_len = Integer.MAX_VALUE;
+        int ancestor = -1;
+        BreadthFirstDirectedPaths bfsv = new BreadthFirstDirectedPaths(g, v);
+        BreadthFirstDirectedPaths bfsw = new BreadthFirstDirectedPaths(g, w);
+        for(int i = 0; i < g.V(); ++i){
+            if(bfsv.hasPathTo(i) && bfsw.hasPathTo(i)){
+                int len_v = bfsv.distTo(i);
+                int len_w = bfsw.distTo(i);
+                if(len_v + len_w < default_len){
+                    default_len = len_v+len_w;
+                    ancestor = i;
+                }
+            }
+        }
+        if(ancestor == -1){
+            result[0] = -1;
+            result[1] = -1;
+        }
+        else{
+            result[0] = default_len;
+            result[1] = ancestor;
+        }
+        return result;
+    }
+
+    // length of shortest ancestral path between v and w; -1 if no such path
+    public int length(int v, int w){
+        int length[] = sap(v, w);
+        return length[0];
+    }
+ 
+    // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
+    public int ancestor(int v, int w){
+        int ancestor[] = sap(v, w);
+        return ancestor[1];
     }
  
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
     public int length(Iterable<Integer> v, Iterable<Integer> w){
-        List<Integer> l = new ArrayList<>();
-        for(int v1: v){
-            for(int w1: w){
-                l.add(length(v1, w1));
-            }
+        if(v == null || w == null){
+            throw new IllegalArgumentException();
         }
-        return Collections.min(l);
+        int length[] = sap(v, w);
+        return length[0];
     }
  
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w){
-        for(int v1: v){
-            for(int w1: w){
-                ancestor = ancestor(v1, w1);
-            }
+        if(v == null || w == null){
+            throw new IllegalArgumentException();
         }
-        return ancestor;
+        int ancestor[] = sap(v, w);
+        return ancestor[1];
     }
- 
-    //do unit testing of this class
-    // public static void main(String[] args) throws Exception {
-    //     ParsingFiles pf = new ParsingFiles();
-    //     pf.ParseSysets();
-    //     pf.ParseHypernyms();
-    //     Digraph d = new Digraph(pf.hypernyms.size());
-    //     for(int key: pf.hypernyms.keySet()){
-    //         pf.count++;
-    //         for(int val: pf.hypernyms.get(key)){
-    //             d.addEdge(key,val);
-    //             pf.count1++;
-    //         }
-    //     }
-    //     SAP s = new SAP(d);
-    //     System.out.println(s.ancestor(7,5));
-    //     System.out.println(s.length(7,5));
-    //     System.out.println(pf.count+", "+pf.count1);
-    // } 
- }
+}
