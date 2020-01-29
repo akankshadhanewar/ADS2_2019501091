@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.princeton.cs.algs4.TrieST;
-import sun.misc.Cache;
 
 public class BoggleSolver{
 
-    TrieST tst = new TrieSt();
+    TrieST<Integer> tst = new TrieST<Integer>();
     // Initializes the data structure using the given array of strings as the dictionary.
     // (You can assume each word in the dictionary contains only the uppercase letters A through Z.)
     public BoggleSolver(String[] dictionary){
@@ -17,10 +16,10 @@ public class BoggleSolver{
         }
     }
 
-    // Returns the set of all valid words in the given Boggle board, as an Iterable.
-    public Iterable<String> getAllValidWords(BoggleBoard board){
+    // // Returns the set of all valid words in the given Boggle board, as an Iterable.
+    // public Iterable<String> getAllValidWords(BoggleBoard board){
 
-    }
+    // }
 
     // Returns the score of the given word if it is in the dictionary, zero otherwise.
     // (You can assume the word contains only the uppercase letters A through Z.)
@@ -39,10 +38,9 @@ public class BoggleSolver{
                 case 5: return 2;
                 case 6: return 3;
                 case 7: return 5;
-                
+                default: return 11;
             }
-        }
-        return 0;    
+        }    
     }
 
     public static void main(String args[])throws IOException{
@@ -54,10 +52,12 @@ public class BoggleSolver{
             ar.add(s);
         }
         String[] sArray = new String[ar.size()];
-        sArray=ar.toArray(sArray);
-        for(int i = 0; i<sArray.length; i++){
-            System.out.println(sArray[i]);
-        }
+        sArray = ar.toArray(sArray);
+        // for(int i = 0; i<sArray.length; i++){
+        //     System.out.println(sArray[i]);
+        // }
+        BoggleSolver bs = new BoggleSolver(sArray);
+        System.out.println(bs.tst.size());
         BFile.close();
     }
 }
