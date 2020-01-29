@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import edu.princeton.cs.algs4.TrieST;
 
@@ -44,15 +45,15 @@ public class BoggleSolver{
     }
 
     public static void main(String args[])throws IOException{
-        ArrayList<String> ar = new ArrayList<String>();
+        HashSet<String> hs = new HashSet<String>();
         FileReader file = new FileReader("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/Week-3/dictionary-algs4.txt");
         BufferedReader BFile = new BufferedReader(file);
         String s;
         while((s = BFile.readLine()) != null){
-            ar.add(s);
+            hs.add(s);
         }
-        String[] sArray = new String[ar.size()];
-        sArray = ar.toArray(sArray);
+        String[] sArray = new String[hs.size()];
+        sArray = hs.toArray(sArray);
         // for(int i = 0; i<sArray.length; i++){
         //     System.out.println(sArray[i]);
         // }
