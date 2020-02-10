@@ -15,7 +15,7 @@ import edu.princeton.cs.algs4.StdOut;
 public class ShowEnergy {
 
     public static void main(String[] args) {
-        Picture picture = new Picture(args[0]);
+        Picture picture = new Picture("/home/user/Documents/ADS2_2019501091/ADS2_2019501091/Week-2/10x12.png");
         StdOut.printf("image is %d columns by %d rows\n", picture.width(), picture.height());
         picture.show();        
         SeamCarver sc = new SeamCarver(picture);
